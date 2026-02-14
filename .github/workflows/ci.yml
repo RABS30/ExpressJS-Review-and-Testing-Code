@@ -98,8 +98,13 @@ jobs:
 
     - name: Start Express Server
       run: |
-        npm start &
-        sleep 5
+        npm start > server.log 2>&1 &
+        echo "Waiting for server..."
+        sleep 10
+        cat server.log
+
+    - name: Check server availability
+      run: curl http://localhost:3000/notes
 
     - name: Run k6 Load Test
       uses: grafana/k6-action@v0.3.0
