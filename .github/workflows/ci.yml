@@ -94,7 +94,7 @@ jobs:
     - run: npm install
 
     - name: Start Express Server
-      run: |`
+      run: |
         npm start > server.log 2>&1 &
         echo "Server starting..."
 
