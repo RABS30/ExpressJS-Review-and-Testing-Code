@@ -85,28 +85,30 @@ jobs:
    needs: [lint, test]
 
    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    - uses: actions/setup-node@v4
       with:
         node-version: 18
 
-    - name: Install dependencies
-      run: npm install
+    - run: npm install
 
     - name: Start Express Server
-      run: |
+      run: |`
         npm start > server.log 2>&1 &
-        echo "Waiting for server..."
-        sleep 10
-        cat server.log
+        echo "Server starting..."
 
-    - name: Check server availability
-      run: curl http://localhost:3000/notes
+    - name: Wait until server ready
+      run: |
+        for i in {1..20}; do
+          curl -s http://localhost:3000/ && break
+          echo "Waiting for server..."
+          sleep 3
+        done
+        curl -f http://localhost:3000/
 
     - name: Run k6 Load Test
       uses: grafana/k6-action@v0.3.0
       with:
         filename: loadtest/script.js
+
