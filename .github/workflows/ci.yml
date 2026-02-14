@@ -9,7 +9,7 @@ on:
 jobs:
 
   lint:
-    name: ESLint Check
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -29,7 +29,7 @@ jobs:
 
 
   test:
-    name: Unit Test & Coverage
+    name: Test
     runs-on: ubuntu-latest
     needs: lint
 
@@ -50,7 +50,7 @@ jobs:
 
 
   sonar:
-    name: SonarCloud Scan
+    name: SonarQube Scan
     runs-on: ubuntu-latest
     needs: test
 
@@ -70,8 +70,8 @@ jobs:
         uses: sonarsource/sonarqube-scan-action@v2
         with:
           args: >
-            -Dsonar.projectKey=rabs-devops_notes-app-sonar
-            -Dsonar.organization=rabs-devops
+            -Dsonar.projectKey=RABS30_ExpressJS-Review-and-Testing-Code
+            -Dsonar.organization=rabs30
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.sources=.
             -Dsonar.exclusions=node_modules/**,coverage/**
